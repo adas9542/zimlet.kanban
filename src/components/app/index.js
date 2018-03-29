@@ -8,7 +8,9 @@ import style from './style';
 const TASKS = [
 	{ id: 1, title: 'Task #1', percentComplete: 0 },
 	{ id: 2, title: 'Task #2', percentComplete: 50 },
-	{ id: 2, title: 'Task #3', percentComplete: 100 }
+	{ id: 2, title: 'Task #3', percentComplete: 0 },
+	{ id: 2, title: 'Task #4', percentComplete: 0 },
+	{ id: 2, title: 'Task #5', percentComplete: 0 }
 ];
 
 export default function createApp(context) {
@@ -17,7 +19,7 @@ export default function createApp(context) {
 	@provide({ zimbraComponents: context.components })
 	@wire('zimbraComponents', null, ({ Sidebar }) => ({ Sidebar }))
 	class App extends Component {
-
+	
 		handleBack = (id) => {
 
 			//loop over tasks, find the one with id, and change its percent complete
@@ -42,7 +44,7 @@ export default function createApp(context) {
 					<div class={style.main}>
 						<h2>My Board</h2>
 						<div class={style.columns}>
-							<Column title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
+							<Column title="To Do" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
 							<Column title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
 							<Column title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
 						</div>
