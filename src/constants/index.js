@@ -1,2 +1,2 @@
-export const SLUG = 'my-project';
+export const SLUG = 'kanban';
 

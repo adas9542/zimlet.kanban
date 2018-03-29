@@ -1,6 +1,6 @@
 {
 	"my-project": {
-		"menuItem": "my-project",
+		"menuItem": "Todo Kanban",
 		"jira": {
 			"title": "Jira",
 			"key": "Key",
