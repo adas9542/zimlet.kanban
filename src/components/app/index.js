@@ -1,8 +1,8 @@
 import { h, Component } from 'preact';
-// import { provide } from 'preact-context-provider';
+import { provide } from 'preact-context-provider';
 import { withIntl } from '../../enhancers';
 import Column from '../column';
-// import wire from 'wiretie';
+import wire from 'wiretie';
 import style from './style';
 
 const TASKS = [
@@ -14,8 +14,8 @@ const TASKS = [
 export default function createApp(context) {
 
 	@withIntl
-	// @provide({ zimbraComponents: context.components })
-	// @wire('zimbraComponents', null, ({ Sidebar }) => ({ Sidebar }))
+	@provide({ zimbraComponents: context.components })
+	@wire('zimbraComponents', null, ({ Sidebar }) => ({ Sidebar }))
 	class App extends Component {
 
 		handleBack = (id) => {
@@ -23,12 +23,30 @@ export default function createApp(context) {
 			//loop over tasks, find the one with id, and change its percent complete
 		}
 
-		render({ }) {
+		
+		render({ Sidebar }) {
 			return (
 				<div class={style.wrapper}>
-					<Column title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
-					<Column title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
-					<Column title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
+					{/*Example of using component from ZimbraX client, in this case, Sidebar*/}
+					<Sidebar>
+						<h3>Links</h3>
+						<ol>
+							<li>
+								<a href="https://lonni.me">lonni.me</a>
+							</li>
+							<li>
+								<a href="https://github.com/zimbra/zimlet-cli">zimlet-cli</a>
+							</li>
+						</ol>
+					</Sidebar>
+					<div class={style.main}>
+						<h2>My Board</h2>
+						<div class={style.columns}>
+							<Column title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
+							<Column title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
+							<Column title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
+						</div>
+					</div>
 				</div>
 			);
 		}
