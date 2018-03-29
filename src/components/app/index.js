@@ -8,14 +8,8 @@ import style from './style';
 const TASKS = [
 	{ id: 1, title: 'Task #1', percentComplete: 0 },
 	{ id: 2, title: 'Task #2', percentComplete: 50 },
-<<<<<<< HEAD
 	{ id: 2, title: 'Task #3', percentComplete: 100 },
 	{ id: 4, title: 'Task #3', percentComplete: 100 }
-=======
-	{ id: 2, title: 'Task #3', percentComplete: 0 },
-	{ id: 2, title: 'Task #4', percentComplete: 0 },
-	{ id: 2, title: 'Task #5', percentComplete: 0 }
->>>>>>> 6ed758dd35df01dbc1df258557a72b178cc72f3e
 ];
 
 export default function createApp(context) {
