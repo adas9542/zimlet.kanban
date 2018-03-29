@@ -8,7 +8,9 @@ handleTask = () => {}
 handleBack = () => {
 	this.props.onBack(this.props.id);
 }
-
+handleForward = () => {
+	this.props.onForward(this.props.id);
+}
 render({ title, id }) {
 	return (
 		<div class={style.task}>

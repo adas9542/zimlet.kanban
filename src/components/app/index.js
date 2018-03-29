@@ -8,9 +8,11 @@ import style from './style';
 const TASKS = [
 	{ id: 1, title: 'Task #1', percentComplete: 0 },
 	{ id: 2, title: 'Task #2', percentComplete: 50 },
-	{ id: 2, title: 'Task #3', percentComplete: 0 },
-	{ id: 2, title: 'Task #4', percentComplete: 0 },
-	{ id: 2, title: 'Task #5', percentComplete: 0 }
+	{ id: 3, title: 'Task #3', percentComplete: 0 },
+	{ id: 4, title: 'Task #4', percentComplete: 0 },
+	{ id: 5, title: 'Task #5', percentComplete: 100 },
+	{ id: 6, title: 'Task #6', percentComplete: 100 },
+	{ id: 7, title: 'Task #7', percentComplete: 100 }
 ];
 
 export default function createApp(context) {
@@ -21,10 +23,37 @@ export default function createApp(context) {
 	class App extends Component {
 	
 		handleBack = (id) => {
-			console.log('I got back for id ', id);
 			//loop over tasks, find the one with id, and change its percent complete
-		}
+			console.log('handleBack : I got back for id ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
+			let cur_task = TASKS.filter((t) => t.id === id)[0];
+			console.log('before changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
+			if (cur_task.percentComplete>=50){
+				TASKS.filter((t) => t.id === id)[0].percentComplete-=50;
+				console.log('after changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
+				this.setState({});
+			}
+			else {
 
+			}
+			
+			//filter out on id and reduce its percent
+			// TASKS.filter((t) => t.id === id);
+
+		}
+		handleForward = (id) => {
+			//loop over tasks, find the one with id, and change its percent complete
+			console.log('handleForward : I got forward for id ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
+			let cur_task = TASKS.filter((t) => t.id === id)[0];
+			console.log('before changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
+			if (cur_task.percentComplete<=50){
+				TASKS.filter((t) => t.id === id)[0].percentComplete+=50;
+				console.log('after changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
+				this.setState({});
+			}
+			else {
+
+			}
+		}
 		
 		render({ Sidebar }) {
 			return (
@@ -44,9 +73,9 @@ export default function createApp(context) {
 					<div class={style.main}>
 						<h2>My Board</h2>
 						<div class={style.columns}>
-							<Column onBack={this.handleBack} title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
-							<Column title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
-							<Column title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
+							<Column onBack={this.handleBack} onForward={this.handleForward} title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
+							<Column onBack={this.handleBack} onForward={this.handleForward} title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
+							<Column onBack={this.handleBack} onForward={this.handleForward} title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
 						</div>
 					</div>
 				</div>
