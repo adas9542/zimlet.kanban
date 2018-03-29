@@ -25,7 +25,7 @@ export default function Zimlet(context) {
 	const MenuItem = withIntl(() => (
 		<components.MenuItem
 			responsive
-			icon="fa:code"
+			icon="check"
 			href={`/${SLUG}`}
 		>
 			<Text id="my-project.menuItem" />
