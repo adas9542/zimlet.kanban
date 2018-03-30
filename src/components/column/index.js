@@ -6,13 +6,18 @@ export default class Column extends Component {
 
 handleTask = () => {}
 
-render({ title, tasks, onBack, onForward }) {
+handleAdd = () => {
+	this.props.onAdd(this.props.title);
+}
+
+render({ title, tasks, onBack, onForward, onDelete, onAdd }) {
 	return (
 		<div class={style.column}>
 			<h1 style="text-align: center;">{title}</h1>
 			{
-				tasks.map((task) => <Task onBack={onBack} onForward={onForward} {...task} />)//...task???
+				tasks.map((task) => <Task onBack={onBack} onForward={onForward} onDelete={onDelete} {...task} />)//...task???
 			}
+			<button onClick={this.handleAdd}>{'+'}</button>
 		</div>
 		
 	);

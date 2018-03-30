@@ -53,6 +53,49 @@ export default function createApp(context) {
 
 			}
 		}
+		handleDelete = (id) => {
+			//loop over tasks, find the one with id, and change its percent complete
+			console.log('handleDelete : I got Delete for task ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
+			
+			for (let i =0; i < TASKS.length; i++)
+				if (TASKS[i].id === id) {
+					TASKS.splice(i,1);
+					break;
+				}
+
+			console.log('after deleting: ',TASKS);
+			this.setState({});
+		}
+
+		handleAdd = (title) => {
+			// let last_element = TASKS[TASKS.length - 1];
+			// let last_id = last_element.id;
+			let max = -1;
+			for (let i =0; i < TASKS.length; i++)
+				if (TASKS[i].id > max) {
+					max = TASKS[i].id;
+					
+				}
+
+			let new_percent;
+			if (title==='ToDo'){
+				new_percent = 0;
+			}
+			else if (title==='In Progress'){
+				new_percent = 50;
+			}
+			else {
+				new_percent = 100;
+			}
+			let new_task = { id: max+1, title: 'temp title', percentComplete: new_percent };
+			
+			
+			TASKS.push(new_task);
+
+			this.setState({});
+
+
+		}
 		
 		render({ folderId }) {
 			return (
@@ -72,9 +115,11 @@ export default function createApp(context) {
 					<div class={style.main}>
 						<h2>My Board</h2>
 						<div class={style.columns}>
-							<Column onBack={this.handleBack} onForward={this.handleForward} title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
-							<Column onBack={this.handleBack} onForward={this.handleForward} title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
-							<Column onBack={this.handleBack} onForward={this.handleForward} title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
+							<Column onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd} title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)} />
+
+							<Column onBack={this.handleBack} onForward={this.handleForward}onDelete={this.handleDelete} onAdd={this.handleAdd} title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)} />
+
+							<Column onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd} title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)} />
 						</div>
 					</div>
 				</div>
