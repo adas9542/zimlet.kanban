@@ -46,9 +46,9 @@ render({ percentComplete, onEdit, onPercentComplete, onAdd, onDelete, handleSetP
 			{
 				tasks.map((task) => <Task onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} {...task} />)//...task???
 			}
-			<ActionButton class={style.toggleAdd} monotone icon="plus" onClick={this.handleAdd}>Add Task</ActionButton>
-			</div>
 
+			</div>
+			<ActionButton class={style.toggleAdd} monotone icon="plus" onClick={this.handleAdd}>Add Task</ActionButton>
 		</div>
 
 	);
