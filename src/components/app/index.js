@@ -96,26 +96,24 @@ export default function createApp(context) {
 					</Sidebar>
 					<div class={style.main}>
 						{ loading && 'Loading...'}
-						{ searchResults &&
-							<div>
-								<div class={style.header}>My Board</div>
-								<div class={style.columns}>
-									<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-										title="ToDo"
-										tasks={TASKS.filter((t) => t.percentComplete === 0)}
-									/>
+						{ searchResults && [
+							<div class={style.header}>My Board</div>,
+							<div class={style.columns}>
+								<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+									title="ToDo"
+									tasks={TASKS.filter((t) => t.percentComplete === 0)}
+								/>
 
-									<Column percentComplete={50} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-										title="In Progress"
-										tasks={TASKS.filter((t) => t.percentComplete === 50)}
-									/>
+								<Column percentComplete={50} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+									title="In Progress"
+									tasks={TASKS.filter((t) => t.percentComplete === 50)}
+								/>
 
-									<Column percentComplete={100} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-										title="Done"
-										tasks={TASKS.filter((t) => t.percentComplete === 100)}
-									/>
-								</div>
-							</div>
+								<Column percentComplete={100} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+									title="Done"
+									tasks={TASKS.filter((t) => t.percentComplete === 100)}
+								/>
+							</div>]
 						}
 					</div>
 				</div>
