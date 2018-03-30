@@ -22,11 +22,20 @@ export default function createApp(context) {
 	class App extends Component {
 
 		handleSetPercentComplete = ({ id, percentComplete }) => {
+			id = +id;
+			console.log('getting called from column: ',percentComplete);
+			console.log('id of task: ',id, typeof id);
+
+			let cur_task = TASKS.filter((t) => t.id === id)[0];
+			cur_task.percentComplete=percentComplete;
+			let new_cur_task = TASKS.filter((t) => t.id === id)[0];
+			console.log('after changing the new column:',new_cur_task.percentComplete);
+			this.setState({});
 			//TODO: update the task with ID to the new percent complete
 		}
 	
 		handleBack = (id) => {
-			//loop over tasks, find the one with id, and change its percent complete
+			//loop over tasks, find the one with id, an7d change its percent complete
 			console.log('handleBack : I got back for id ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
 			let cur_task = TASKS.filter((t) => t.id === id)[0];
 			console.log('before changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
@@ -130,16 +139,19 @@ export default function createApp(context) {
 					<div class={style.main}>
 						<h2 style="padding: 0px 0px 0px 12px;">My Board</h2>
 						<div class={style.columns}>
-							<Column percentComplete={0} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
-								title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)}
+							<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+								title="ToDo"
+								tasks={TASKS.filter((t) => t.percentComplete === 0)}
 							/>
 
-							<Column percentComplete={50} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
-								title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)}
+							<Column percentComplete={50} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+								title="In Progress"
+								tasks={TASKS.filter((t) => t.percentComplete === 50)}
 							/>
 
-							<Column percentComplete={100} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
-								title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)}
+							<Column percentComplete={100} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+								title="Done"
+								tasks={TASKS.filter((t) => t.percentComplete === 100)}
 							/>
 						</div>
 					</div>
