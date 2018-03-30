@@ -38,10 +38,12 @@ render({ onEdit, onAdd, onDelete, title, tasks, ActionButton }, { isHovering }) 
 		<div class={cx(style.column, isHovering && style.hovering)} onDrop={this.handleDrop} onDragOver={this.handleDragOver}
 			ondragleave={this.dragLeave}
 		>
-			<h1 style="text-align: center;">{title}</h1>
-			{
-				tasks.map((task) => <Task onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} {...task} />)//...task???
-			}
+			 <div class={style.header}>{title}</div>
+-                       <div class={style.taskContainer}>
+				{
+					tasks.map((task) => <Task onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} {...task} />)//...task???
+				}
+			</div>
 			<ActionButton class={style.toggleAdd} monotone icon="plus" onClick={this.handleAdd}>Add Task</ActionButton>
 		</div>
 		
