@@ -48,7 +48,8 @@ export default function createApp(context) {
 
 		handleDelete = (id) => {
 			//loop over tasks, find the one with id, and change its percent complete
-			
+			console.log('handleDelete : I got Delete for task ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
+
 			for (let i =0; i < TASKS.length; i++)
 				if (TASKS[i].id === id) {
 					TASKS.splice(i,1);
@@ -77,9 +78,8 @@ export default function createApp(context) {
 
 
 		}
-		
-		render({ searchResults, loading }) {
-			console.log('SearchResults is', searchResults);
+
+		render({ loading, searchResults }) {
 			return (
 				<div class={style.wrapper}>
 					{/*Example of using component from ZimbraX client, in this case, Sidebar*/}
@@ -98,7 +98,7 @@ export default function createApp(context) {
 						{ loading && 'Loading...'}
 						{ searchResults &&
 							<div>
-								<h2 style="padding: 0px 0px 0px 12px;">My Board</h2>
+								<div class={style.header}>My Board</div>
 								<div class={style.columns}>
 									<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
 										title="ToDo"
