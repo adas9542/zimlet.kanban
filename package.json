@@ -28,6 +28,7 @@
     "eslint-config-synacor": "^3.0.0"
   },
   "dependencies": {
+    "@zimbra/x-ui": "^1.0.0",
     "preact-context-provider": "^1.1.1",
     "preact-i18n": "^1.2.0",
     "wiretie": "^1.0.3"
