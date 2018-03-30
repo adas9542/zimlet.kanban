@@ -40,16 +40,17 @@ handleKeyDown = (e) => {
 }
 
 
-render({ title, id, DraggableCard }, { isDraggable, isEditing, newTitle }) {
+render({ title, id, dueDate, DraggableCard }, { isDraggable, isEditing, newTitle }) {
 	return (
-		<DraggableCard draggable scrim={false} square={false} data={{ name: id }} >
+		<DraggableCard class={style.task} key={id} draggable scrim={false} square={false} data={{ name: id }} >
 			<TaskContextMenu onDelete={this.handleDelete} >
-				<div class={style.task} key={id}>
+				<div>
 					{isEditing ?
 						<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onBlur={this.stopEditing} onKeyDown={this.handleKeyDown} />
 						:
-						<h2 onDblClick={this.handleDblClick}>{title}</h2>
+						<div class={style.title} onDblClick={this.handleDblClick}>{title}</div>
 					}
+					{dueDate && <div class={style.dueDate}>{dueDate}</div>}
 				</div>
 			</TaskContextMenu>
 		</DraggableCard>
