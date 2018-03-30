@@ -1,5 +1,4 @@
-# my-project
-
+# Kanban
 ## CLI Commands
 
 ``` bash
