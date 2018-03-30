@@ -1,4 +1,5 @@
 import { h, Component } from 'preact';
+import TaskContextMenu from '../task-context-menu';
 import wire from 'wiretie';
 import style from './style';
 
@@ -42,16 +43,15 @@ handleKeyDown = (e) => {
 render({ title, id, DraggableCard }, { isDraggable, isEditing, newTitle }) {
 	return (
 		<DraggableCard draggable scrim={false} square={false} data={{ name: id }} >
-			<div class={style.task}>
-				{isEditing ?
-					<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onBlur={this.stopEditing} onKeyDown={this.handleKeyDown} />
-					:
-					<h2 onDblClick={this.handleDblClick}>{title}</h2>
-				}
-				<div class={style.right}>
-					<button onClick={this.handleDelete}>{'x'}</button>
+			<TaskContextMenu onDelete={this.handleDelete} >
+				<div class={style.task} key={id}>
+					{isEditing ?
+						<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onBlur={this.stopEditing} onKeyDown={this.handleKeyDown} />
+						:
+						<h2 onDblClick={this.handleDblClick}>{title}</h2>
+					}
 				</div>
-			</div>
+			</TaskContextMenu>
 		</DraggableCard>
 	);
 }

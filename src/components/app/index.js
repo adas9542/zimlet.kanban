@@ -83,29 +83,19 @@ export default function createApp(context) {
 		}
 
 		handleAdd = (title) => {
-			// let last_element = TASKS[TASKS.length - 1];
-			// let last_id = last_element.id;
-			let max = -1;
-			for (let i =0; i < TASKS.length; i++)
-				if (TASKS[i].id > max) {
-					max = TASKS[i].id;
-					
-				}
+			let id = TASKS.reduce((max, { id }) => Math.max(max, id), -1) + 1;
 
-			let new_percent;
+			let percentComplete;
 			if (title==='ToDo'){
-				new_percent = 0;
+				percentComplete = 0;
 			}
 			else if (title==='In Progress'){
-				new_percent = 50;
+				percentComplete = 50;
 			}
 			else {
-				new_percent = 100;
+				percentComplete = 100;
 			}
-			let new_task = { id: max+1, title: 'temp title', percentComplete: new_percent };
-			
-			
-			TASKS.push(new_task);
+			TASKS.push({ id, title: 'temp title', percentComplete });
 
 			this.setState({});
 
