@@ -11,12 +11,18 @@ handleBack = () => {
 handleForward = () => {
 	this.props.onForward(this.props.id);
 }
+handleDelete = () => {
+	this.props.onDelete(this.props.id);
+}
 render({ title, id }) {
 	return (
 		<div class={style.task}>
 			<h2>{title}</h2>
 			<button onClick={this.handleBack}>{'<-'}</button>
 			<button onClick={this.handleForward}>{'->'}</button>
+			<div class={style.right}>
+				<button onClick={this.handleDelete}>{'x'}</button>
+			</div>
 		</div>
 	);
 }
