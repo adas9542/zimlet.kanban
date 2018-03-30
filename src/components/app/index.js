@@ -16,7 +16,7 @@ export default function createApp(context) {
 	@wire('batchClient', ({ folderId }) => ({
 		//defaults to Tasks folder with id
 		searchResults: ['search', { offset: 0, limit: 1000, types: 'task', query: `inid:${folderId || TASK_FOLDER_ID}` }]
-	}), ({ getMessage, modifyTask, itemAction }) => ({ getMessage, modifyTask, itemAction }))
+	}), ({ getMessage, modifyTask, itemAction, createTask }) => ({ getMessage, modifyTask, itemAction, createTask }))
 	class App extends Component {
 
 		handleChangeStatus = ({ id, status }) => {
@@ -32,6 +32,13 @@ export default function createApp(context) {
 			this.props.getMessage({ id })
 				.then(task => getModifyTaskBody(task, { name }))
 				.then(this.props.modifyTask)
+				.then(this.props.refresh)
+				.catch((err) => console.log('Error updating', err));
+		}
+
+		handleAdd = ({ name }) => {
+			Promise.resolve(getModifyTaskBody({ folderId: this.props.folderId || TASK_FOLDER_ID }, { name: name || 'New Task' }))
+				.then(this.props.createTask)
 				.then(this.props.refresh)
 				.catch((err) => console.log('Error updating', err));
 		}

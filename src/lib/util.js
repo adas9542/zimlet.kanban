@@ -47,6 +47,13 @@ export function getModifyTaskBody(task, { status, name }) {
 		}
 	};
 
+	let emailAddresses = organizer ? {
+		emailAddresses: [{
+			address: organizer.address,
+			name: organizer.name,
+			type: 'f'
+		}] } : {};
+
 	if (!name) name = get(task, 'invitations.0.components.0.name');
 
 	return {
@@ -69,11 +76,7 @@ export function getModifyTaskBody(task, { status, name }) {
 				]
 			},
 			...description,
-			emailAddresses: [{
-				address: organizer.address,
-				name: organizer.name,
-				type: 'f'
-			}]
+			...emailAddresses
 		}
 	};
 }
