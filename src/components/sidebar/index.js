@@ -20,8 +20,8 @@ export default class Sidebar extends Component {
 	render({ currentFolderId, specialFolderList, hiddenFolderList, customContextMenus, FolderList, Sidebar }) {
 		return (
 			<Sidebar
-			header={false}
-			class={style.sidebar}
+				header={false}
+				class={style.sidebar}
 			>
 				<FolderList
 					indexFolderName={TOP_LEVEL_TASKS_FOLDER}

@@ -1,21 +1,12 @@
 import { h, Component } from 'preact';
 import { provide } from 'preact-context-provider';
 import { withIntl } from '../../enhancers';
+import { TASK_FOLDER_ID, NEED_STATUS, COMPLETE_STATUS, IN_PROGRESS_STATUS } from '../../constants';
+import { getModifyTaskBody } from '../../lib/util';
 import Column from '../column';
 import Sidebar from '../sidebar';
 import style from './style';
 import wire from 'wiretie';
-
-
-const TASKS = [
-	{ id: 1, title: 'Task #1', percentComplete: 0 },
-	{ id: 2, title: 'Task #2', percentComplete: 50 },
-	{ id: 3, title: 'Task #3', percentComplete: 0 },
-	{ id: 4, title: 'Task #4', percentComplete: 0 },
-	{ id: 5, title: 'Task #5', percentComplete: 100 },
-	{ id: 6, title: 'Task #6', percentComplete: 100 },
-	{ id: 7, title: 'Task #7', percentComplete: 100 }
-];
 
 
 export default function createApp(context) {
@@ -23,63 +14,69 @@ export default function createApp(context) {
 	@withIntl
 	@provide({ zimbraComponents: context.components })
 	@wire('batchClient', ({ folderId }) => ({
-		searchResults: ['search', { offset: 0, limit: 1000, types: 'task', query: 'inid:15' }]
-	}))
+		//defaults to Tasks folder with id
+		searchResults: ['search', { offset: 0, limit: 1000, types: 'task', query: `inid:${folderId || TASK_FOLDER_ID}` }]
+	}), ({ getMessage, modifyTask, itemAction }) => ({ getMessage, modifyTask, itemAction }))
 	class App extends Component {
 
-		handleSetPercentComplete = ({ id, percentComplete }) => {
-			id = +id;
-
-			let task = TASKS.filter((t) => t.id === id)[0];
-			task.percentComplete=percentComplete;
-			this.setState({});
-			//TODO: update the task with ID to the new percent complete
-		}
+		handleChangeStatus = ({ id, status }) => {
+			this.props.getMessage({ id })
+				.then(task => getModifyTaskBody(task, { status }))
+				.then(this.props.modifyTask)
+				.then(this.props.refresh)
+				.catch((err) => console.log('Error updating', err));
+		};
+			
 	
-		handleEdit = ({ id, title }) => {
-			TASKS.some((t) => {
-				if (t.id === id) {
-					t.title = title;
-					this.setState({});
-					return true;
-				}
-			});
+		handleEdit = ({ id, name }) => {
+			this.props.getMessage({ id })
+				.then(task => getModifyTaskBody(task, { name }))
+				.then(this.props.modifyTask)
+				.then(this.props.refresh)
+				.catch((err) => console.log('Error updating', err));
 		}
 
 		handleDelete = (id) => {
-			//loop over tasks, find the one with id, and change its percent complete
-			console.log('handleDelete : I got Delete for task ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
+			this.props.itemAction({ id, op: 'delete' })
+				.then(this.props.refresh)
+				.catch((err) => console.log('Error updating', err));
+		}
 
-			for (let i =0; i < TASKS.length; i++)
-				if (TASKS[i].id === id) {
-					TASKS.splice(i,1);
-					break;
+		// handleAdd = (title) => {
+		// 	let id = TASKS.reduce((max, { id }) => Math.max(max, id), -1) + 1;
+
+		// 	let percentComplete;
+		// 	if (title==='ToDo'){
+		// 		percentComplete = 0;
+		// 	}
+		// 	else if (title==='In Progress'){
+		// 		percentComplete = 50;
+		// 	}
+		// 	else {
+		// 		percentComplete = 100;
+		// 	}
+		// 	TASKS.push({ id, title: 'temp title', percentComplete });
+
+		// 	this.setState({});
+
+
+		// }
+
+		render({ loading, searchResults, folderId }) {
+
+			let todoTasks=[], inProgressTasks=[], completeTasks=[];
+			(searchResults && searchResults.task || []).forEach(t => {
+				if (t.status==='NEED') {
+					todoTasks.push(t);
 				}
+				else if (t.status==='COMP') {
+					completeTasks.push(t);
+				}
+				else {
+					inProgressTasks.push(t);
+				}
+			});
 
-			this.setState({});
-		}
-
-		handleAdd = (title) => {
-			let id = TASKS.reduce((max, { id }) => Math.max(max, id), -1) + 1;
-
-			let percentComplete;
-			if (title==='ToDo'){
-				percentComplete = 0;
-			}
-			else if (title==='In Progress'){
-				percentComplete = 50;
-			}
-			else {
-				percentComplete = 100;
-			}
-			TASKS.push({ id, title: 'temp title', percentComplete });
-
-			this.setState({});
-
-
-		}
-
-		render({ loading, searchResults }) {
 			return (
 				<div class={style.wrapper}>
 					{/*Example of using component from ZimbraX client, in this case, Sidebar*/}
@@ -96,22 +93,19 @@ export default function createApp(context) {
 					</Sidebar>
 					<div class={style.main}>
 						{ loading && 'Loading...'}
-						{ searchResults && [
+						{ !loading && searchResults && [
 							<div class={style.header}>My Board</div>,
 							<div class={style.columns}>
-								<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-									title="ToDo"
-									tasks={TASKS.filter((t) => t.percentComplete === 0)}
+								<Column status={NEED_STATUS} onEdit={this.handleEdit} onChangeStatus={this.handleChangeStatus}
+									onAdd={this.handleAdd} onDelete={this.handleDelete} title="ToDo" tasks={todoTasks}
 								/>
 
-								<Column percentComplete={50} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-									title="In Progress"
-									tasks={TASKS.filter((t) => t.percentComplete === 50)}
+								<Column status={IN_PROGRESS_STATUS} onEdit={this.handleEdit} onChangeStatus={this.handleChangeStatus} onAdd={this.handleAdd} onDelete={this.handleDelete}
+									title="In Progress" tasks={inProgressTasks}
 								/>
 
-								<Column percentComplete={100} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-									title="Done"
-									tasks={TASKS.filter((t) => t.percentComplete === 100)}
+								<Column status={COMPLETE_STATUS} onEdit={this.handleEdit} onChangeStatus={this.handleChangeStatus} onAdd={this.handleAdd} onDelete={this.handleDelete}
+									title="Done" tasks={completeTasks}
 								/>
 							</div>]
 						}

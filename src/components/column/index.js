@@ -15,9 +15,8 @@ handleAdd = () => {
 
 handleDrop = (e) => {
 	let taskId = e.dataTransfer.getData('text');
-	console.log('Dropped id:', taskId, e);
 	//call the approprate onBack/onForward method
-	this.props.handleSetPercentComplete({ id: taskId, percentComplete: this.props.percentComplete });
+	this.props.onChangeStatus({ id: taskId, status: this.props.status });
 	this.setState({ isHovering: false });
 }
 
@@ -33,24 +32,19 @@ handleDragOver = (e) => {
 
 dragLeave = (e) => {
 	this.setState({ isHovering: false });
-	console.log('leaving');
 }
-render({ percentComplete, onEdit, onPercentComplete, onAdd, onDelete, handleSetPercentComplete, title, tasks, ActionButton }, { isHovering }) {
+render({ onEdit, onAdd, onDelete, title, tasks, ActionButton }, { isHovering }) {
 	return (
 		<div class={cx(style.column, isHovering && style.hovering)} onDrop={this.handleDrop} onDragOver={this.handleDragOver}
 			ondragleave={this.dragLeave}
 		>
-			<div class={style.header}>{title}</div>
-			<div class={style.taskContainer}>
-
+			<h1 style="text-align: center;">{title}</h1>
 			{
 				tasks.map((task) => <Task onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} {...task} />)//...task???
 			}
-
-			</div>
 			<ActionButton class={style.toggleAdd} monotone icon="plus" onClick={this.handleAdd}>Add Task</ActionButton>
 		</div>
-
+		
 	);
 }
 }
