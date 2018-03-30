@@ -128,7 +128,7 @@ export default function createApp(context) {
 						</ol>
 					</Sidebar>
 					<div class={style.main}>
-						<h2>My Board</h2>
+						<h2 style="padding: 0px 0px 0px 12px;">My Board</h2>
 						<div class={style.columns}>
 							<Column percentComplete={0} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
 								title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)}
