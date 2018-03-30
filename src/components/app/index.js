@@ -33,7 +33,7 @@ export default function createApp(context) {
 			this.setState({});
 			//TODO: update the task with ID to the new percent complete
 		}
-	
+
 		handleBack = (id) => {
 			//loop over tasks, find the one with id, an7d change its percent complete
 			console.log('handleBack : I got back for id ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
@@ -47,7 +47,7 @@ export default function createApp(context) {
 			else {
 
 			}
-			
+
 			//filter out on id and reduce its percent
 			// TASKS.filter((t) => t.id === id);
 
@@ -80,7 +80,7 @@ export default function createApp(context) {
 		handleDelete = (id) => {
 			//loop over tasks, find the one with id, and change its percent complete
 			console.log('handleDelete : I got Delete for task ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
-			
+
 			for (let i =0; i < TASKS.length; i++)
 				if (TASKS[i].id === id) {
 					TASKS.splice(i,1);
@@ -110,7 +110,7 @@ export default function createApp(context) {
 
 
 		}
-		
+
 		render({ folderId }) {
 			return (
 				<div class={style.wrapper}>
@@ -127,7 +127,7 @@ export default function createApp(context) {
 						</ol>
 					</Sidebar>
 					<div class={style.main}>
-						<h2 style="padding: 0px 0px 0px 12px;">My Board</h2>
+						<div class={style.header}>My Board</div>
 						<div class={style.columns}>
 							<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
 								title="ToDo"

@@ -1,21 +1,45 @@
 @import '~@zimbra/x-ui/helpers.less';
 
 .column {
-  border-radius: 5px  ;
-  font-size: 13px;
   flex: 1;
-  // background-color: gray;
-  background-color: rgb(242, 242, 242);
-  margin: 5px;
-  padding-bottom: 15px;
-//   .scroll();
-//   justify-content: stretch;
+  flex-direction: column;
+  margin: 0 4px;
+  display: flex;
+  height: 100%;
+  min-height: 0;
+	border: 2px dashed transparent;
+	background: #eee;
+	border-radius: 4px;
+	padding: 16px;
 
   &.hovering {
-    border:2px dashed var(--brand-success);    
+    border: 2px dashed #7ed321;
   }
 }
 
+.header {
+	color: var(--gray-darker);
+	font-weight: 600;
+	font-size: 13px;
+	margin: 0 8px 16px 8px;
+}
 .center {
   text-align: center;
+}
+
+.taskContainer {
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  flex: 1 1 auto;
+  min-height: 0;
+
+}
+
+.toggleAdd {
+	text-align: left;
+	height: 32px;
+	padding: 0;
+	display: flex;
+	align-items: center;
 }

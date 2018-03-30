@@ -40,13 +40,17 @@ render({ percentComplete, onEdit, onPercentComplete, onAdd, onDelete, handleSetP
 		<div class={cx(style.column, isHovering && style.hovering)} onDrop={this.handleDrop} onDragOver={this.handleDragOver}
 			ondragleave={this.dragLeave}
 		>
-			<h1 style="text-align: center;">{title}</h1>
+			<div class={style.header}>{title}</div>
+			<div class={style.taskContainer}>
+
 			{
 				tasks.map((task) => <Task onEdit={onEdit} onAdd={onAdd} onDelete={onDelete} {...task} />)//...task???
 			}
 			<ActionButton class={style.toggleAdd} monotone icon="plus" onClick={this.handleAdd}>Add Task</ActionButton>
+			</div>
+
 		</div>
-		
+
 	);
 }
 }
