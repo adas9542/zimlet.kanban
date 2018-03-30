@@ -11,12 +11,6 @@ state = {
 
 handleTask = () => {}
 
-handleBack = () => {
-	this.props.onBack(this.props.id);
-}
-handleForward = () => {
-	this.props.onForward(this.props.id);
-}
 handleDelete = () => {
 	this.props.onDelete(this.props.id);
 }
@@ -32,6 +26,7 @@ handleInput = (e) => {
 stopEditing = () => {
 	this.setState({ isEditing: false, newTitle: this.props.title });
 }
+
 handleKeyDown = (e) => {
 	let title = this.state.newTitle;
 	if (e.key === 'Escape' || e.key === 'Enter') {
@@ -44,17 +39,15 @@ handleKeyDown = (e) => {
 }
 
 
-render({ title, id, DraggableCard }, { isEditing, newTitle }) {
+render({ title, id, DraggableCard }, { isDraggable, isEditing, newTitle }) {
 	return (
-		<DraggableCard draggable square={false} data={{ name: id }} >
+		<DraggableCard draggable scrim={false} square={false} data={{ name: id }} >
 			<div class={style.task}>
 				{isEditing ?
 					<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onBlur={this.stopEditing} onKeyDown={this.handleKeyDown} />
 					:
 					<h2 onDblClick={this.handleDblClick}>{title}</h2>
 				}
-				<button onClick={this.handleBack}>{'<-'}</button>
-				<button onClick={this.handleForward}>{'->'}</button>
 				<div class={style.right}>
 					<button onClick={this.handleDelete}>{'x'}</button>
 				</div>
