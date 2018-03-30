@@ -27,12 +27,18 @@ handleInput = (e) => {
 	this.setState({ newTitle: e.target.value });
 }
 
+stopEditing = () => {
+	this.setState({ isEditing: false, newTitle: this.props.title });
+}
 handleKeyDown = (e) => {
 	console.log('my event is', e);
-	if (e.key === 'Enter') {
-		this.setState({ isEditing: false });
-		this.props.onEdit({ id: this.props.id, title: this.state.newTitle });
-		//do something to submit so it gets updated
+	let title = this.state.newTitle;
+	if (e.key === 'Escape' || e.key === 'Enter') {
+		this.stopEditing();
+	}
+
+	if ( e.key === 'Enter') {
+		this.props.onEdit({ id: this.props.id, title });
 	}
 }
 
@@ -41,7 +47,7 @@ render({ title, id }, { isEditing, newTitle }) {
 	return (
 		<div class={style.task}>
 			{isEditing ?
-				<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onKeyDown={this.handleKeyDown} />
+				<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onBlur={this.stopEditing} onKeyDown={this.handleKeyDown} />
 				:
 				<h2 onDblClick={this.handleDblClick}>{title}</h2>
 			}
