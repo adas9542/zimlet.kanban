@@ -46,7 +46,7 @@ handleKeyDown = (e) => {
 
 render({ title, id, DraggableCard }, { isEditing, newTitle }) {
 	return (
-		<DraggableCard draggable square={false}>
+		<DraggableCard draggable square={false} data={{ name: id }} >
 			<div class={style.task}>
 				{isEditing ?
 					<input type="text" class={style.inputBox} value={newTitle} onInput={this.handleInput} onBlur={this.stopEditing} onKeyDown={this.handleKeyDown} />

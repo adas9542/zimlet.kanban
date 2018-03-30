@@ -20,6 +20,10 @@ export default function createApp(context) {
 	@withIntl
 	@provide({ zimbraComponents: context.components })
 	class App extends Component {
+
+		handleSetPercentComplete = ({ id, percentComplete }) => {
+			//TODO: update the task with ID to the new percent complete
+		}
 	
 		handleBack = (id) => {
 			//loop over tasks, find the one with id, and change its percent complete
@@ -126,16 +130,16 @@ export default function createApp(context) {
 					<div class={style.main}>
 						<h2>My Board</h2>
 						<div class={style.columns}>
-							<Column onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd} title="ToDo"
-								tasks={TASKS.filter((t) => t.percentComplete === 0)}
+							<Column percentComplete={0} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
+								title="ToDo" tasks={TASKS.filter((t) => t.percentComplete === 0)}
 							/>
 
-							<Column onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd} title="In Progress"
-								tasks={TASKS.filter((t) => t.percentComplete === 50)}
+							<Column percentComplete={50} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
+								title="In Progress" tasks={TASKS.filter((t) => t.percentComplete === 50)}
 							/>
 
-							<Column onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd} title="Done"
-								tasks={TASKS.filter((t) => t.percentComplete === 100)}
+							<Column percentComplete={100} onEdit={this.handleEdit} onBack={this.handleBack} onForward={this.handleForward} onDelete={this.handleDelete} onAdd={this.handleAdd}
+								title="Done" tasks={TASKS.filter((t) => t.percentComplete === 100)}
 							/>
 						</div>
 					</div>
