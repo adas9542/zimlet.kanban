@@ -4,6 +4,8 @@ import { withIntl } from '../../enhancers';
 import Column from '../column';
 import Sidebar from '../sidebar';
 import style from './style';
+import wire from 'wiretie';
+
 
 const TASKS = [
 	{ id: 1, title: 'Task #1', percentComplete: 0 },
@@ -15,58 +17,25 @@ const TASKS = [
 	{ id: 7, title: 'Task #7', percentComplete: 100 }
 ];
 
+
 export default function createApp(context) {
 
 	@withIntl
 	@provide({ zimbraComponents: context.components })
+	@wire('batchClient', ({ folderId }) => ({
+		searchResults: ['search', { offset: 0, limit: 1000, types: 'task', query: 'inid:15' }]
+	}))
 	class App extends Component {
 
 		handleSetPercentComplete = ({ id, percentComplete }) => {
 			id = +id;
-			console.log('getting called from column: ',percentComplete);
-			console.log('id of task: ',id, typeof id);
 
-			let cur_task = TASKS.filter((t) => t.id === id)[0];
-			cur_task.percentComplete=percentComplete;
-			let new_cur_task = TASKS.filter((t) => t.id === id)[0];
-			console.log('after changing the new column:',new_cur_task.percentComplete);
+			let task = TASKS.filter((t) => t.id === id)[0];
+			task.percentComplete=percentComplete;
 			this.setState({});
 			//TODO: update the task with ID to the new percent complete
 		}
-
-		handleBack = (id) => {
-			//loop over tasks, find the one with id, an7d change its percent complete
-			console.log('handleBack : I got back for id ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
-			let cur_task = TASKS.filter((t) => t.id === id)[0];
-			console.log('before changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
-			if (cur_task.percentComplete>=50){
-				TASKS.filter((t) => t.id === id)[0].percentComplete-=50;
-				console.log('after changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
-				this.setState({});
-			}
-			else {
-
-			}
-
-			//filter out on id and reduce its percent
-			// TASKS.filter((t) => t.id === id);
-
-		}
-		handleForward = (id) => {
-			//loop over tasks, find the one with id, and change its percent complete
-			console.log('handleForward : I got forward for id ', TASKS.filter((t) => t.id === id)[0].title); //assuming ids are unique
-			let cur_task = TASKS.filter((t) => t.id === id)[0];
-			console.log('before changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
-			if (cur_task.percentComplete<=50){
-				TASKS.filter((t) => t.id === id)[0].percentComplete+=50;
-				console.log('after changing ', TASKS.filter((t) => t.id === id)[0].percentComplete); //assuming ids are unique
-				this.setState({});
-			}
-			else {
-
-			}
-		}
-
+	
 		handleEdit = ({ id, title }) => {
 			TASKS.some((t) => {
 				if (t.id === id) {
@@ -87,7 +56,6 @@ export default function createApp(context) {
 					break;
 				}
 
-			console.log('after deleting: ',TASKS);
 			this.setState({});
 		}
 
@@ -111,7 +79,7 @@ export default function createApp(context) {
 
 		}
 
-		render({ folderId }) {
+		render({ loading, searchResults }) {
 			return (
 				<div class={style.wrapper}>
 					{/*Example of using component from ZimbraX client, in this case, Sidebar*/}
@@ -127,23 +95,28 @@ export default function createApp(context) {
 						</ol>
 					</Sidebar>
 					<div class={style.main}>
-						<div class={style.header}>My Board</div>
-						<div class={style.columns}>
-							<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-								title="ToDo"
-								tasks={TASKS.filter((t) => t.percentComplete === 0)}
-							/>
+						{ loading && 'Loading...'}
+						{ searchResults &&
+							<div>
+								<div class={style.header}>My Board</div>
+								<div class={style.columns}>
+									<Column percentComplete={0} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.onDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+										title="ToDo"
+										tasks={TASKS.filter((t) => t.percentComplete === 0)}
+									/>
 
-							<Column percentComplete={50} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-								title="In Progress"
-								tasks={TASKS.filter((t) => t.percentComplete === 50)}
-							/>
+									<Column percentComplete={50} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+										title="In Progress"
+										tasks={TASKS.filter((t) => t.percentComplete === 50)}
+									/>
 
-							<Column percentComplete={100} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
-								title="Done"
-								tasks={TASKS.filter((t) => t.percentComplete === 100)}
-							/>
-						</div>
+									<Column percentComplete={100} onEdit={this.handleEdit} onPercentComplete={this.handleSetPercentComplete} onAdd={this.handleAdd} onDelete={this.handleDelete} handleSetPercentComplete={this.handleSetPercentComplete}
+										title="Done"
+										tasks={TASKS.filter((t) => t.percentComplete === 100)}
+									/>
+								</div>
+							</div>
+						}
 					</div>
 				</div>
 			);
