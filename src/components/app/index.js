@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import { provide } from 'preact-context-provider';
 import { withIntl } from '../../enhancers';
 import Column from '../column';
-import wire from 'wiretie';
+import Sidebar from '../sidebar';
 import style from './style';
 
 const TASKS = [
@@ -19,7 +19,6 @@ export default function createApp(context) {
 
 	@withIntl
 	@provide({ zimbraComponents: context.components })
-	@wire('zimbraComponents', null, ({ Sidebar }) => ({ Sidebar }))
 	class App extends Component {
 	
 		handleBack = (id) => {
@@ -98,7 +97,7 @@ export default function createApp(context) {
 
 		}
 		
-		render({ Sidebar }) {
+		render({ folderId }) {
 			return (
 				<div class={style.wrapper}>
 					{/*Example of using component from ZimbraX client, in this case, Sidebar*/}

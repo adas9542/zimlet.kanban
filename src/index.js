@@ -17,7 +17,7 @@ export default function Zimlet(context) {
 	// Register a new route with the preact-router instance
 	function Router() {
 		return [
-			<App path={`/${SLUG}`} />
+			<App path={`/${SLUG}/:folderId?`} />
 		];
 	}
 
